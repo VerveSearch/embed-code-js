@@ -5,21 +5,23 @@ var gulp = require('gulp'),
 	uglify = require('gulp-uglify'),
 	PATHS = {
 		JS:{
-			SRC:['./src/*.js','./src/**/*.js'],
+			SRC:['./src/embed-code-js.js', './src/*.js','./src/**/*.js'],
 			DIST:'./dist'
 		}
 	},
-	PluginName = 'embed-code-js';
+	PluginName = 'embed-code-js',
+	stylish = require('jshint-stylish');
 
 function onError(err){
-	console.log('An error has occured: ',err);
+	console.log('An error has occured: ', err);
 }
 
 gulp.task('jshint',function(){
 	return gulp.src(PATHS.JS.SRC)
 		.pipe(jshint())
-		.pipe(jshint.reporters(stylish)); 
+		.pipe(jshint.reporter(stylish)); 
 });
+
 
 gulp.task('concat',['jshint'],function(){
 	return gulp.src(PATHS.JS.SRC)
@@ -38,6 +40,4 @@ gulp.task('watch',['concat'],function(){
 	return gulp.watch(PATHS.JS.SRC,['concat']); 
 });
 
-gulp.task('default','watch',function(){
-
-});
+gulp.task('default',['watch']);
